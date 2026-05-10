@@ -1,0 +1,61 @@
+/* Simple styling for demo */
+:root{
+  --bg:#f7f9fc;
+  --card:#ffffff;
+  --accent:#0b6efd;
+  --muted:#6b7280;
+}
+*{box-sizing:border-box}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  margin:0;
+  background:var(--bg);
+  color:#111827;
+  padding:24px;
+}
+header{margin-bottom:18px}
+.lead{color:var(--muted)}
+.controls{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.file-label input{margin-left:8px}
+.buttons button{
+  background:var(--card);
+  border:1px solid #e6e9ef;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.buttons button:hover{box-shadow:0 1px 3px rgba(2,6,23,0.06)}
+.table-container{
+  background:var(--card);
+  border:1px solid #e6e9ef;
+  padding:12px;
+  border-radius:8px;
+  overflow:auto;
+  max-height:60vh;
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+}
+th,td{
+  border:1px solid #eef2f7;
+  padding:6px 8px;
+  text-align:left;
+  font-size:14px;
+}
+th{
+  background:#fafbfd;
+  position:sticky;
+  top:0;
+}
+.notes{margin-top:16px;color:var(--muted)}
+footer{margin-top:18px;color:var(--muted)}
+@media(min-width:900px){
+  .controls{justify-content:space-between}
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Data Cleaning Demo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Data Cleaning — Demo HTML</h1>
+    <p class="lead">Unggah file CSV untuk mencoba operasi pembersihan dasar: trim, remove empty, remove duplicates, convert types.</p>
+  </header>
+
+  <main>
+    <section class="controls">
+      <label class="file-label">
+        Pilih CSV:
+        <input id="fileInput" type="file" accept=".csv,text/csv">
+      </label>
+
+      <div class="buttons">
+        <button id="btnTrim">Trim Whitespace</button>
+        <button id="btnRemoveEmpty">Remove Empty Rows</button>
+        <button id="btnRemoveDup">Remove Duplicates</button>
+        <button id="btnConvert">Convert Types</button>
+        <button id="btnDownload">Download CSV</button>
+        <button id="btnReset">Reset</button>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <h2>Preview Data</h2>
+      <div id="tableContainer" class="table-container">Tidak ada data. Unggah CSV untuk melihat preview.</div>
+    </section>
+
+    <section class="notes">
+      <h3>Catatan</h3>
+      <ul>
+        <li>CSV parser sederhana — ideal untuk dataset kecil dan demo.</li>
+        <li>Untuk produksi, gunakan library yang lebih kuat (mis. PapaParse).</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>Project contoh oleh Anda • Data Cleaning Demo</small>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
