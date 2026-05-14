@@ -1,52 +1,185 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Data Cleaning Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xero Data Cleaning - Tool Pembersihan Data Profesional</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header>
-    <h1>Data Cleaning — Demo HTML</h1>
-    <p class="lead">Unggah file CSV untuk mencoba operasi pembersihan dasar: trim, remove empty, remove duplicates, convert types.</p>
-  </header>
-
-  <main>
-    <section class="controls">
-      <label class="file-label">
-        Pilih CSV:
-        <input id="fileInput" type="file" accept=".csv,text/csv">
-      </label>
-
-      <div class="buttons">
-        <button id="btnTrim">Trim Whitespace</button>
-        <button id="btnRemoveEmpty">Remove Empty Rows</button>
-        <button id="btnRemoveDup">Remove Duplicates</button>
-        <button id="btnConvert">Convert Types</button>
-        <button id="btnDownload">Download CSV</button>
-        <button id="btnReset">Reset</button>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1><i class="fas fa-broom"></i> Xero Data Cleaning Tool</h1>
+        <p class="subtitle">Pembersihan data Excel dari Xero dengan mudah dan cepat</p>
       </div>
-    </section>
+    </header>
 
-    <section class="table-section">
-      <h2>Preview Data</h2>
-      <div id="tableContainer" class="table-container">Tidak ada data. Unggah CSV untuk melihat preview.</div>
-    </section>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Upload Section -->
+      <section class="card upload-section">
+        <h2><i class="fas fa-cloud-upload-alt"></i> 1. Upload File Excel</h2>
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
+          <div class="upload-icon">
+            <i class="fas fa-file-excel"></i>
+          </div>
+          <h3>Klik atau drag file Excel/CSV Xero</h3>
+          <p>Format yang didukung: .xlsx, .xls, .csv</p>
+          <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+            <i class="fas fa-folder-open"></i> Pilih File
+          </button>
+        </div>
+        <div id="fileInfo" class="file-info" style="display: none;">
+          <p><i class="fas fa-check-circle"></i> File terpilih: <strong id="fileName"></strong></p>
+        </div>
+      </section>
 
-    <section class="notes">
-      <h3>Catatan</h3>
-      <ul>
-        <li>CSV parser sederhana — ideal untuk dataset kecil dan demo.</li>
-        <li>Untuk produksi, gunakan library yang lebih kuat (mis. PapaParse).</li>
-      </ul>
-    </section>
-  </main>
+      <!-- Preview Section -->
+      <section class="card preview-section" id="previewSection" style="display: none;">
+        <h2><i class="fas fa-eye"></i> 2. Preview Data</h2>
+        <div class="preview-stats">
+          <div class="stat">
+            <span class="stat-label">Total Baris:</span>
+            <span class="stat-value" id="totalRows">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Total Kolom:</span>
+            <span class="stat-value" id="totalColumns">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Status:</span>
+            <span class="stat-value" id="dataStatus">Siap dibersihkan</span>
+          </div>
+        </div>
+        <div class="table-container" id="previewTable"></div>
+      </section>
 
-  <footer>
-    <small>Project contoh oleh Anda • Data Cleaning Demo</small>
-  </footer>
+      <!-- Cleaning Options -->
+      <section class="card cleaning-section" id="cleaningSection" style="display: none;">
+        <h2><i class="fas fa-wand-magic-sparkles"></i> 3. Pilih Pembersihan Data</h2>
+        <div class="cleaning-options">
+          <div class="option-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="trimWhitespace" checked>
+              <span class="label-text">
+                <strong>Trim Whitespace</strong>
+                <small>Hapus spasi berlebih di awal dan akhir</small>
+              </span>
+            </label>
+          </div>
 
+          <div class="option-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="removeEmpty" checked>
+              <span class="label-text">
+                <strong>Hapus Baris Kosong</strong>
+                <small>Hilangkan baris yang tidak memiliki data</small>
+              </span>
+            </label>
+          </div>
+
+          <div class="option-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="removeDuplicates" checked>
+              <span class="label-text">
+                <strong>Hapus Duplikat</strong>
+                <small>Buang data yang sama persis</small>
+              </span>
+            </label>
+          </div>
+
+          <div class="option-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="fixFormatting" checked>
+              <span class="label-text">
+                <strong>Perbaiki Format Kolom</strong>
+                <small>Standarkan format: tanggal, angka, currency</small>
+              </span>
+            </label>
+          </div>
+
+          <div class="option-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="removeSpecialChars">
+              <span class="label-text">
+                <strong>Hapus Karakter Spesial</strong>
+                <small>Hilangkan karakter yang tidak perlu</small>
+              </span>
+            </label>
+          </div>
+
+          <div class="option-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="convertTypes" checked>
+              <span class="label-text">
+                <strong>Konversi Tipe Data</strong>
+                <small>Ubah ke format yang sesuai (number, date, text)</small>
+              </span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="card results-section" id="resultsSection" style="display: none;">
+        <h2><i class="fas fa-check-double"></i> 4. Hasil Pembersihan</h2>
+        <div class="results-summary">
+          <div class="result-item">
+            <span class="result-label">Baris Dihapus:</span>
+            <span class="result-value" id="rowsRemoved">0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Duplikat Dihapus:</span>
+            <span class="result-value" id="duplicatesRemoved">0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Sel Diperbaiki:</span>
+            <span class="result-value" id="cellsFixed">0</span>
+          </div>
+        </div>
+        <div class="table-container" id="resultsTable"></div>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="card action-section" id="actionSection" style="display: none;">
+        <h2><i class="fas fa-download"></i> 5. Ekspor Hasil</h2>
+        <div class="action-buttons">
+          <button class="btn btn-success btn-large" id="btnClean">
+            <i class="fas fa-wand-magic-sparkles"></i> Jalankan Pembersihan
+          </button>
+          <button class="btn btn-info btn-large" id="btnDownloadExcel" style="display: none;">
+            <i class="fas fa-file-excel"></i> Download Excel
+          </button>
+          <button class="btn btn-secondary btn-large" id="btnDownloadCSV" style="display: none;">
+            <i class="fas fa-file-csv"></i> Download CSV
+          </button>
+          <button class="btn btn-warning btn-large" id="btnReset">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Xero Data Cleaning Tool v1.0 | Dibuat dengan <i class="fas fa-heart"></i> oleh Fadityar</p>
+    </footer>
+  </div>
+
+  <!-- Modals -->
+  <div id="loadingModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="spinner"></div>
+      <p>Memproses data...</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
